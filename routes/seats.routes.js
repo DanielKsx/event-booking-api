@@ -20,6 +20,10 @@ router.route('/seats').post((req, res) => {
     if (!day || !seat || !client || !email) {
         return res.status(400).json({ message: 'Missing data' });
     }
+    const seatTaken = db.seats.some(item => item.day === Number(day) && item.seat === Number(seat));
+    if (seatTaken) {
+        return res.status(409).json({ message: 'The slot is already taken...' });
+    }
     const newItem = { id: uuidv4(), day: Number(day), seat: Number(seat), client, email };
     db.seats.push(newItem);
     res.json({ message: 'ok' });
