@@ -26,6 +26,7 @@ router.route('/seats').post((req, res) => {
     }
     const newItem = { id: uuidv4(), day: Number(day), seat: Number(seat), client, email };
     db.seats.push(newItem);
+    req.io.emit('seatsUpdated', db.seats)
     res.json({ message: 'ok' });
 });
 
