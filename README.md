@@ -1,1 +1,1 @@
-https://event-booking-api-9fzq.onrender.com/
+https://event-booking-api-9fzq.onrender.com/order-a-ticket
