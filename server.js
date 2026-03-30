@@ -42,15 +42,10 @@ app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, '/client/build/index.html'));
 });
 
-mongoose.connect('mongodb://0.0.0.0:27017/NewWaveDB')
+mongoose.connect('mongodb+srv://test123:test123@cluster0.zm2ds8q.mongodb.net/NewWaveDB')
   .then(() => console.log('Connected to the database'))
   .catch(err => console.log('Error: ' + err));
-const db = mongoose.connection;
 
-db.once('open', () => {
-  console.log('Connected to the database');
-});
-db.on('error', err => console.log('Error ' + err));
 
 
 
