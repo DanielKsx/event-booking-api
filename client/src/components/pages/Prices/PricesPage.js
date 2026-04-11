@@ -1,24 +1,41 @@
-import { Alert, Container } from 'reactstrap';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Alert, Container, Spinner } from 'reactstrap';
+import { getConcerts, getRequest, loadConcertsRequest } from '../../../redux/concertsRedux';
 
-const Prices = () => (
-  <Container>
-    <h1>Prices</h1>
-    <p>Prices may differ according the day of the festival. Remember that ticket includes not only the star performance, but also 10+ workshops. We gathered several genre teachers to help you increase your vocal skills, as well as self confidence.</p>
-    
-    <Alert color="info">
+const Prices = () => {
+  const dispatch = useDispatch();
+  const concerts = useSelector(getConcerts);
+  const request = useSelector(getRequest);
+
+  useEffect(() => {
+    dispatch(loadConcertsRequest());
+  }, [dispatch]);
+
+  if (request.pending) return <Spinner />;
+  if (request.error) return <p>Error: {request.error}</p>;
+
+  return (
+    <Container>
+      <h1>Prices</h1>
+      <p>
+        Prices may differ according the day of the festival. Remember that ticket includes not only the star performance,
+        but also 10+ workshops.
+      </p>
+
+      <Alert color="info">
         Attention! <strong>Children under 4 can go freely with you without any other fee!</strong>
-    </Alert>
+      </Alert>
 
-    <h2>Day one</h2>
-    <p>Price: 25$</p>
-    <p>Workshops: "Rock Music Style", "How to make you voice grooowl", "Make your voice stronger", "History of Rock"</p>
-    <h2>Day Two</h2>
-    <p>Price: 25$</p>
-    <p>Workshops: "Find your real tune", "Find your real YOU", "Fell the music", "Jam session"</p>
-    <h2>Day three</h2>
-    <p>Price: 50$</p>
-    <p>Workshops: "Increase your vocal range", "How to properly warmup before singing", "It's time for YOU!"</p>
-  </Container>
-);
+      {concerts.map(concert => (
+        <div key={concert._id}>
+          <h2>Day {concert.day}</h2>
+          <p>Price: {concert.price}$</p>
+          <p>Performer: {concert.performer}</p>
+        </div>
+      ))}
+    </Container>
+  );
+};
 
 export default Prices;
